@@ -111,4 +111,9 @@ contract TokenAuction {
       owner.transfer(address(this).balance);
     }
 
+    function setFee(uint fee) public {
+      require (msg.sender == owner,"You must be the owner to set a new fee!");
+      contractFee = fee;
+    }
+
 }
