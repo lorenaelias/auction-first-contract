@@ -18,6 +18,7 @@ contract TokenAuction {
   	 uint winnerBid;
   	 bool payment;
 	   VerySimpleToken token;
+     uint thiscontractFee;
   }
 
   uint collateralValue;
@@ -32,8 +33,9 @@ contract TokenAuction {
     contractFee = fee;
   }
 
-  function createAuction(string memory name, uint time, VerySimpleToken t) public {
+  function createAuction(string memory name, uint time, uint fee, VerySimpleToken t) public {
     require (t.isOwner(msg.sender),"You must own the token to create one auction!");
+    require (fee == contractFee, "The fee must be the same as the contract fee!");
     OneAuction memory l;
     l.blocklimit= block.number + time;
     l.myState = AuctionStates.Prep;
@@ -41,6 +43,7 @@ contract TokenAuction {
     l.tokenOwner = msg.sender;
     l.payment = false;
     l.token = t;
+    l.thiscontractFee = contractFee;
     //Bug1
     myAuctions[name]=l;
   }
